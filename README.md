@@ -1,4 +1,4 @@
-# ZeroGrads Verification in Rust with Candle
+# [ZeroGrads](https://mfischer-ucl.github.io/zerograds/) unofficial implementation in Rust with Candle
 
 This repository is a project designed to verify the performance of the ZeroGrads algorithm implemented in Rust using
 the `candle` library. ZeroGrads utilizes a surrogate function-based gradient descent method, effective particularly for
