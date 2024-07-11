@@ -9,7 +9,7 @@ use candle_nn::{
 use std::time::Instant;
 
 /// Objective function
-/// 1000 dimensional simple quadratic function
+/// high dimensional simple quadratic function
 fn objective(x: &Tensor) -> f32 {
     x.mul(&x)
         .unwrap()
@@ -67,7 +67,7 @@ fn main() -> Result<()> {
     let mut nn_opt = AdamW::new(param_varmap.all_vars(), nn_opt_params)?;
 
     {
-        // Warmup
+        // This is my custom code for Warmup the surrogate model
         let batchsize = 1;
         let x_batched = x.expand(&[batchsize, ndim])?;
         let xs = x_batched;
@@ -116,10 +116,6 @@ fn main() -> Result<()> {
             let nn_pred = proxy.forward(&xs_pert)?;
             let p_loss = mse(&nn_pred.flatten_all().unwrap(), &fs_tensor)?;
             nn_opt.backward_step(&p_loss)?;
-            // dbg!(
-            //     nn_pred.flatten_all().unwrap().to_vec1::<f32>().unwrap(),
-            //     fs_tensor.to_vec1::<f32>().unwrap()
-            // );
         }
 
         let input_x = x.expand(&[1, ndim])?;
